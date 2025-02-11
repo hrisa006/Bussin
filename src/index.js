@@ -8,7 +8,7 @@ const app = express();
 app.use(cookieParser());
 
 app.get('/', (req, res) => {
-    res.render('index');
+    // res.render('index');
 });
 
 app.listen(8080,  () => {
