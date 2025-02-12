@@ -1,0 +1,11 @@
+GET http://localhost:8080/posts
+
+###
+
+POST http://localhost:8080/posts
+Content-Type: application/json
+
+{
+  "username": "Veselin",
+  "password": "password"
+}

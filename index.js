@@ -2,6 +2,7 @@ const express = require('express');
 const ejs = require('ejs');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
+require('dotenv').config();
 
 const app = express();
 const PORT = 8080;
