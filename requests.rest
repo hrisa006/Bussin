@@ -6,16 +6,19 @@ POST http://localhost:8080/posts
 Content-Type: application/json
 
 {
-  "username": "Veselin",
+  "username": "Goshko",
   "password": "password"
 }
 
 
 ###
-POST http://localhost:8080/posts/login
+POST http://localhost:8080/login
 Content-Type: application/json
 
 {
-  "username": "Veselin",
-  "password": "pass"
+  "username": "Goshko",
+  "password": "password"
 }
+
+###
+GET http://localhost:8080/logout
