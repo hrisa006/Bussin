@@ -2,12 +2,12 @@ GET http://localhost:8080/posts
 
 ###
 
-POST http://localhost:8080/posts
+POST http://localhost:8080/register
 Content-Type: application/json
 
 {
-  "username": "Goshko",
-  "password": "password"
+  "username": "Hrisi",
+  "password": "pass66"
 }
 
 
@@ -16,8 +16,8 @@ POST http://localhost:8080/login
 Content-Type: application/json
 
 {
-  "username": "Goshko",
-  "password": "password"
+  "username": "Hrisi",
+  "password": "pass66"
 }
 
 ###

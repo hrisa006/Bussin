@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
+const db = require("./src/setup.js");
 
 const app = express();
 const PORT = 8080;
@@ -13,9 +14,24 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.json());
 
+const SequelConfig = require('../config/sequelizeConfig');
+
+const Sequelize = require('sequelize');
+
+const sequelize = new Sequelize(SequelConfig.DB, SequelConfig.USER, SequelConfig.PASSWORD, {
+
+    host: SequelConfig.HOST,
+
+    dialect: SequelConfig.dialect
+
+});
+
+
+
+
 const posts = [
   {
-    username: "Hrisi",
+    username: "Vesko",
     password: "Post1",
   },
   {
@@ -24,19 +40,42 @@ const posts = [
   },
 ];
 
+function authenticateToken(req, res, next) {
+  const token = req.cookies.auth_cookie;
+  if (token == null) {
+    return res.sendStatus(401);
+  }
+
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    if (err) {
+      return res.sendStatus(403);
+    }
+    req.user = user;
+    next();
+  });
+}
+
 app.get("/posts", authenticateToken, (req, res) => {
   res.json(posts.filter((post) => post.username === req.user.username));
 });
 
-app.post("/posts", async (req, res) => {
+app.post("/register", async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
     const user = { username: req.body.username, password: hashedPassword };
     posts.push(user);
+
     res.status(201).send();
   } catch {
     res.status(500).send();
   }
+  // const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+  // res.cookie("auth_cookie", accessToken, {
+  //   maxAge: 3600000,
+  //   httpOnly: true,
+  //   secure: process.env.NODE_ENV === "production",
+  //   sameSite: "strict",
+  // });
 });
 
 app.post("/login", async (req, res) => {
@@ -68,21 +107,15 @@ app.get("/logout", (req, res) => {
   res.status(200).send("Logged out");
 });
 
-function authenticateToken(req, res, next) {
-  const token = req.cookies.auth_cookie;
-  if (token == null) {
-    return res.sendStatus(401);
-  }
-
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-    if (err) {
-      return res.sendStatus(403);
-    }
-    req.user = user;
-    next();
-  });
-}
-
 app.listen(PORT, () => {
   console.log(`Server is listening on port http://localhost:${PORT}`);
+  db.sequelize.sync().then(() => {
+
+    console.log('user created ');
+  
+  }).catch(err => {
+  
+    console.error(err)
+  
+  })
 });
