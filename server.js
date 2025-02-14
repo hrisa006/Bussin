@@ -4,7 +4,6 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
-const db = require("./src/setup.js");
 
 const app = express();
 const PORT = 8080;
@@ -14,31 +13,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.json());
 
-const SequelConfig = require('../config/sequelizeConfig');
-
-const Sequelize = require('sequelize');
-
-const sequelize = new Sequelize(SequelConfig.DB, SequelConfig.USER, SequelConfig.PASSWORD, {
-
-    host: SequelConfig.HOST,
-
-    dialect: SequelConfig.dialect
-
-});
-
-
-
-
-const posts = [
-  {
-    username: "Vesko",
-    password: "Post1",
-  },
-  {
-    username: "Pisi",
-    password: "Post2",
-  },
-];
+const User = require("./src/models/userModel");
+const { where } = require("sequelize");
+const sequelize = require("./src/config/database");
 
 function authenticateToken(req, res, next) {
   const token = req.cookies.auth_cookie;
@@ -62,30 +39,34 @@ app.get("/posts", authenticateToken, (req, res) => {
 app.post("/register", async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    const user = { username: req.body.username, password: hashedPassword };
-    posts.push(user);
-
-    res.status(201).send();
-  } catch {
+    const user = await User.create({
+      username: req.body.username,
+      password: hashedPassword,
+    });
+    const payload = { id: user.id, username: user.username };
+    const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET);
+    res.cookie("auth_cookie", accessToken, {
+      maxAge: 3600000,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+    res.status(201).send("kghjk");
+  } catch (e) {
+    console.log(e);
     res.status(500).send();
   }
-  // const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
-  // res.cookie("auth_cookie", accessToken, {
-  //   maxAge: 3600000,
-  //   httpOnly: true,
-  //   secure: process.env.NODE_ENV === "production",
-  //   sameSite: "strict",
-  // });
 });
 
 app.post("/login", async (req, res) => {
-  const user = posts.find((user) => user.username === req.body.username);
+  const user = await User.findOne({ where: { username } });
+  const payload = { id: user.id, username: user.username };
   if (user == null) {
     return res.status(400).json({ error: "Cannot find user" });
   }
   try {
     if (await bcrypt.compare(req.body.password, user.password)) {
-      const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+      const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET);
       res.cookie("auth_cookie", accessToken, {
         maxAge: 3600000,
         httpOnly: true,
@@ -107,15 +88,14 @@ app.get("/logout", (req, res) => {
   res.status(200).send("Logged out");
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is listening on port http://localhost:${PORT}`);
-  db.sequelize.sync().then(() => {
-
-    console.log('user created ');
-  
-  }).catch(err => {
-  
-    console.error(err)
-  
+sequelize
+  .sync()
+  .then(() => {
+    console.log("Database is synchronized");
+    app.listen(PORT, () => {
+      console.log(`Server is listening on port http://localhost:${PORT}`);
+    });
   })
-});
+  .catch((err) => {
+    console.error(err);
+  });
