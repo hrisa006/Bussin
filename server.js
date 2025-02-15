@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 
 const sequelize = require("./src/config/database");
 const authRoutes = require("./src/routes/authRoutes");
+const transportRoutes = require("./src/routes/transportRoutes");
 
 const app = express();
 const PORT = 8080;
@@ -15,6 +16,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use("/auth", authRoutes);
+app.use("/transport", transportRoutes);
 
 sequelize
   .sync()
