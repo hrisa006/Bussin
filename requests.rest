@@ -2,7 +2,17 @@ GET http://localhost:8080/posts
 
 ###
 
-POST http://localhost:8080/register
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+  "username": "Pisi",
+  "password": "pass66"
+}
+
+
+###
+POST http://localhost:8080/auth/login
 Content-Type: application/json
 
 {
@@ -10,15 +20,5 @@ Content-Type: application/json
   "password": "pass66"
 }
 
-
 ###
-POST http://localhost:8080/login
-Content-Type: application/json
-
-{
-  "username": "Hrisi",
-  "password": "pass66"
-}
-
-###
-GET http://localhost:8080/logout
+GET http://localhost:8080/auth/logout
