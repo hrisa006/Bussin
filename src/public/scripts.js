@@ -87,13 +87,6 @@ async function findNearbyStops(userLat, userLng) {
       .map((route) => `<option value="${route}">${route}</option>`)
       .join("");
 
-    // stopsInRange.forEach((stop) => {
-    //   new AdvancedMarkerElement({
-    //     position: { lat: stop.lat, lng: stop.lng },
-    //     map: map,
-    //     title: stop.name,
-    //   });
-    // });
   } catch (error) {
     console.error("Error while searching for the stops:", error);
   }
