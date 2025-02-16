@@ -1,6 +1,3 @@
-GET http://localhost:8080/posts
-
-###
 POST http://localhost:8080/auth/register
 Content-Type: application/json
 
@@ -8,7 +5,6 @@ Content-Type: application/json
   "username": "admin",
   "password": "admin123"
 }
-
 
 ###
 POST http://localhost:8080/auth/login
@@ -29,60 +25,58 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTczOTY1NDM5N30.kEDUgFJy6QchCHUVUPUsIA1fq_oyaNGPzMPri5bayUU
 
 {
-  "number": "94",
+  "number": "280",
   "directions": [
     {
       "name": "Софийски университет - Студентски град",
-      "startTime": "04:35",
-      "endTime": "23:48",
-      "interval": "15",
+      "startTime": "04:40",
+      "endTime": "23:55",
+      "interval": "10",
       "stops": [
-        { "name": "Софийски университет" },
-        { "name": "Пл. Орлов Мост" },
-        { "name": "Ул. Граф Игнатиев" },
-        { "name": "Ул. 6-Ти Септември" },
-        { "name": "Хотел Хилтън" },
-        { "name": "Хотел Хемус" },
-        { "name": "Семинарията" },
-        { "name": "Ул. Стоян Михайловски" },
-        { "name": "Гара Пионер" },
-        { "name": "Пк Диана" },
-        { "name": "Читалище Д. Чинтулов" },
-        { "name": "Бул. Д-Р Г. М. Димитров" },
-        { "name": "Висше Училище По Телекомуникации и пощи" },
-        { "name": "Детски дом" },
-        { "name": "Спортна зала Христо Ботев" },
-        { "name": "Детски ясли" },
-        { "name": "Зимен Дворец На Спорта" },
-        { "name": "Ск На Нса" },
-        { "name": "Студентски град" }
+        { "name": "Su SV.Kliment Ohridski" },
+        { "name": "Voenna Akademiya" },
+        { "name": "Pl. Orlov Most" },
+        { "name": "Hotel Pliska" },
+        { "name": "ZH. K. Iztok" },
+        { "name": "Republikanski Nevrodispanser" },
+        { "name": "Tehnitcheska Biblioteka" },
+        { "name": "Nsbal PO Onkologiya" },
+        { "name": "Tehnitcheski Universitet" },
+        { "name": "LTU" },
+        { "name": "ZH. K. Darvenitsa" },
+        { "name": "Unss" },
+        { "name": "Detski Dom" },
+        { "name": "Sportna Zala HR. Botev" },
+        { "name": "Detski Yasli" },
+        { "name": "Zimen Dvorets Na Sporta" },
+        { "name": "SK Na NSA" },
+        { "name": "Studentski Grad" }
       ]
     },
     {
       "name":"Студентски град - Софийски университет",
-      "startTime": "05:12",
-      "endTime": "00:31",
-      "interval": "15",
+      "startTime": "05:20",
+      "endTime": "00:25",
+      "interval": "10",
       "stops": [
-        { "name": "Студентски град" },
-        { "name": "Ск На Нса" },
-        { "name": "Зимен Дворец На Спорта" },
-        { "name": "Детски ясли" },
-        { "name": "Спортна зала Христо Ботев" },
-        { "name": "Детски дом" },
-        { "name": "Висше Училище По Телекомуникации и пощи" },
-        { "name": "Бул. Д-Р Г. М. Димитров" },
-        { "name": "Читалище Д. Чинтулов" },
-        { "name": "Пк Диана" },
-        { "name": "Гара Пионер" },
-        { "name": "Семинарията" },
-        { "name": "Хотел Хемус" },
-        { "name": "Хотел Хилтън" },
-        { "name": "Ж.К. Изток" },
-        { "name": "Ул. 6-Ти Септември" },
-        { "name": "Кино Одеон" },
-        { "name": "Ул. Ген. Гурко" },
-        { "name": "Софийски университет" }
+        { "name": "Studentski Grad" },
+        { "name": "SK Na NSA" },
+        { "name": "Zimen Dvorets Na Sporta" },
+        { "name": "Detski Yasli" },
+        { "name": "Sportna Zala HR. Botev" },
+        { "name": "Detski Dom" },
+        { "name": "Unss" },
+        { "name": "ZH. K. Darvenitsa" },
+        { "name": "LTU" },
+        { "name": "Tehnitcheski Universitet" },
+        { "name": "Nsbal PO Onkologiya" },
+        { "name": "Tehnitcheska Biblioteka" },
+        { "name": "Republikanski Nevrodispanser" },
+        { "name": "Ploshtad Na Aviatsyata" },
+        { "name": "ZH. K. Iztok" },
+        { "name": "Hotel Pliska" },
+        { "name": "Pl. Orlov Most" },
+        { "name": "Su SV.Kliment Ohridski" }
       ]
     }
   ]
@@ -94,9 +88,13 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTczOTY2MTA1NX0.NssWMEIQ0HQqF0T2Z6AezqScX1lCaE21sUEOMaeuNAs
 
 {
-  "stopName": "Студентски град"
+  "stopName": "Studentski Grad"
 }
 
 ###
 GET http://localhost:8080/transport/routes/280/schedule
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTczOTY1NTgxN30.oqfGtQVH0eNOvgybbnSgsyFJ92C1D8Y7JJz35Vsr0y4
+
+###
+GET http://localhost:8080/transport/stops
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTczOTY4MTIxOH0.jIc5sLWVboyMkyecxlEji3dEekotYKp_Nmno1y1txyQ

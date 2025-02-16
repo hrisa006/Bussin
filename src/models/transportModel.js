@@ -49,6 +49,16 @@ const Stop = sequelize.define("Stop", {
 
     allowNull: false,
   },
+  lat: {
+    type: DataTypes.FLOAT,
+
+    allowNull: false,
+  },
+  lng: {
+    type: DataTypes.FLOAT,
+
+    allowNull: false,
+  },
   directionId: {
     type: DataTypes.INTEGER,
 

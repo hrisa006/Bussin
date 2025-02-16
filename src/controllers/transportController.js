@@ -1,5 +1,6 @@
 const { where } = require("sequelize");
 const { BusRoute, Direction, Stop } = require("../models/transportModel");
+const getCoordinates = require("../utils/coordinatesFinder");
 const generateSchedule = require("../utils/scheduleGenerator");
 
 const addBusRoute = async (req, res) => {
@@ -24,11 +25,18 @@ const addBusRoute = async (req, res) => {
 
       await Promise.all(
         directionData.stops.map(async (stop, index) => {
+          // using Place API - not very accurate
+          const coordinates = await getCoordinates(stop.name);
+          if (!coordinates) {
+            throw new Error(`Failed locating: ${stop.name}`);
+          }
           await Promise.all(
             schedule[index].map(async (time) => {
               await Stop.create({
                 name: stop.name,
                 time: time,
+                lat: coordinates.lat,
+                lng: coordinates.lng,
                 directionId: newDirection.id,
               });
             })
@@ -136,8 +144,89 @@ const getRouteSchedule = async (req, res) => {
   }
 };
 
+const getStops = async (req, res) => {
+  try {
+    const stops = await Stop.findAll({
+      include: [
+        {
+          model: Direction,
+          include: [
+            {
+              model: BusRoute,
+              attributes: ["number"],
+            },
+          ],
+        },
+      ],
+    });
+
+    const uniqueStops = {};
+    stops.forEach((stop) => {
+      const key = `${stop.name}-${stop.lat}-${stop.lng}`;
+      if (!uniqueStops[key]) {
+        uniqueStops[key] = {
+          id: stop.id,
+          name: stop.name,
+          lat: stop.lat,
+          lng: stop.lng,
+          routes: new Set(),
+        };
+      }
+
+      if (stop.Direction && stop.Direction.BusRoute) {
+        uniqueStops[key].routes.add(stop.Direction.BusRoute.number);
+      }
+    });
+
+    const formattedStops = Object.values(uniqueStops).map((stop) => ({
+      ...stop,
+      routes: Array.from(stop.routes),
+    }));
+
+    res.json(formattedStops);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Грешка при зареждане на спирките");
+  }
+};
+
+const getRouteCoordinates = async (req, res) => {
+  const { busRouteNum } = req.params;
+
+  if (!busRouteNum) {
+    return res.status(400).send("Route number of the bus is required");
+  }
+
+  try {
+    const route = await BusRoute.findOne({
+      where: { number: busRouteNum },
+      include: [
+        {
+          model: Direction,
+          as: "Directions",
+          include: [{ model: Stop, as: "Stops" }],
+        },
+      ],
+    });
+    if (!route) {
+      return res.status(404).send("Bus route not found");
+    }
+
+    const coordinates = route.Directions[0].Stops.map((stop) => ({
+      lat: stop.lat,
+      lng: stop.lng,
+    }));
+
+    res.json(coordinates);
+  } catch {
+    res.status(500).send();
+  }
+};
+
 module.exports = {
   addBusRoute,
   getRoutesByStop,
   getRouteSchedule,
+  getStops,
+  getRouteCoordinates,
 };
