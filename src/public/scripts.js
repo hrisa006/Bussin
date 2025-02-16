@@ -1,21 +1,13 @@
 let map, infoWindow;
 
 function getDistance(lat1, lng1, lat2, lng2) {
-  const R = 6371e3;
-  const φ1 = (lat1 * Math.PI) / 180;
-  const φ2 = (lat2 * Math.PI) / 180;
-  const Δφ = ((lat2 - lat1) * Math.PI) / 180;
-  const Δλ = ((lng2 - lng1) * Math.PI) / 180;
+  const dx = lat2 - lat1;
+  const dy = lng2 - lng1;
 
-  const a =
-    Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-    Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
-
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c;
+  return Math.hypot(dx, dy) * 111.32;
 }
 
-async function initMap() {
+function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: 42.698334, lng: 23.319941 },
     zoom: 13,
@@ -54,7 +46,6 @@ async function initMap() {
 }
 
 async function findNearbyStops(userLat, userLng) {
-  const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
   try {
     const response = await fetch("/transport/stops", {
       method: "GET",
@@ -71,23 +62,23 @@ async function findNearbyStops(userLat, userLng) {
     const stopsInRange = stops.filter((stop) => {
       const distance = getDistance(userLat, userLng, stop.lat, stop.lng);
 
-      return distance <= 500;
+      return distance <= 4;
     });
 
     const stopsList = document.getElementById("stops-list");
-    stopsList.innerHTML = stops
+    stopsList.innerHTML = stopsInRange
       .map(
         (stop) => `<li>${stop.name} - Routes: ${stop.routes.join(", ")}</li>`
       )
       .join("");
 
     const stopSelect = document.getElementById("stop");
-    stopSelect.innerHTML = stops
+    stopSelect.innerHTML = stopsInRange
       .map((stop) => `<option value="${stop.id}">${stop.name}</option>`)
       .join("");
 
     const uniqueRoutes = new Set();
-    stops.forEach((stop) => {
+    stopsInRange.forEach((stop) => {
       stop.routes.forEach((route) => uniqueRoutes.add(route));
     });
 
@@ -96,13 +87,13 @@ async function findNearbyStops(userLat, userLng) {
       .map((route) => `<option value="${route}">${route}</option>`)
       .join("");
 
-    stops.forEach((stop) => {
-      new AdvancedMarkerElement({
-        position: { lat: stop.lat, lng: stop.lng },
-        map: map,
-        title: stop.name,
-      });
-    });
+    // stopsInRange.forEach((stop) => {
+    //   new AdvancedMarkerElement({
+    //     position: { lat: stop.lat, lng: stop.lng },
+    //     map: map,
+    //     title: stop.name,
+    //   });
+    // });
   } catch (error) {
     console.error("Error while searching for the stops:", error);
   }

@@ -22,26 +22,17 @@ GET http://localhost:8080/auth/logout
 ###
 POST http://localhost:8080/transport/routes
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTczOTY1NDM5N30.kEDUgFJy6QchCHUVUPUsIA1fq_oyaNGPzMPri5bayUU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTczOTY5ODczM30.fjTUb8JSNBTRWpLrUBJBVLesDLeIL17zFlMDs2WfCzQ
 
 {
-  "number": "280",
+  "number": "102",
   "directions": [
     {
-      "name": "Софийски университет - Студентски град",
-      "startTime": "04:40",
-      "endTime": "23:55",
-      "interval": "10",
+      "name": "LTU - Studentski Grad",
+      "startTime": "04:30",
+      "endTime": "21:55",
+      "interval": "18",
       "stops": [
-        { "name": "Su SV.Kliment Ohridski" },
-        { "name": "Voenna Akademiya" },
-        { "name": "Pl. Orlov Most" },
-        { "name": "Hotel Pliska" },
-        { "name": "ZH. K. Iztok" },
-        { "name": "Republikanski Nevrodispanser" },
-        { "name": "Tehnitcheska Biblioteka" },
-        { "name": "Nsbal PO Onkologiya" },
-        { "name": "Tehnitcheski Universitet" },
         { "name": "LTU" },
         { "name": "ZH. K. Darvenitsa" },
         { "name": "Unss" },
@@ -54,9 +45,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hb
       ]
     },
     {
-      "name":"Студентски град - Софийски университет",
-      "startTime": "05:20",
-      "endTime": "00:25",
+      "name":"Studentski Grad - LTU",
+      "startTime": "04:50",
+      "endTime": "22:15",
       "interval": "10",
       "stops": [
         { "name": "Studentski Grad" },
@@ -67,16 +58,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hb
         { "name": "Detski Dom" },
         { "name": "Unss" },
         { "name": "ZH. K. Darvenitsa" },
-        { "name": "LTU" },
-        { "name": "Tehnitcheski Universitet" },
-        { "name": "Nsbal PO Onkologiya" },
-        { "name": "Tehnitcheska Biblioteka" },
-        { "name": "Republikanski Nevrodispanser" },
-        { "name": "Ploshtad Na Aviatsyata" },
-        { "name": "ZH. K. Iztok" },
-        { "name": "Hotel Pliska" },
-        { "name": "Pl. Orlov Most" },
-        { "name": "Su SV.Kliment Ohridski" }
+        { "name": "LTU" }
       ]
     }
   ]

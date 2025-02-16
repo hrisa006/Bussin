@@ -53,7 +53,7 @@ const login = async (req, res) => {
 
 const logout = (req, res) => {
   res.clearCookie("auth_cookie");
-  res.redirect("/");
+  res.redirect("/auth/login");
 };
 
 module.exports = {
