@@ -1,7 +1,8 @@
+require("dotenv").config();
 const axios = require("axios");
 
 async function getCoordinates(stopName) {
-  const apiKey = "AIzaSyBO6qDxZBuAahxt5CXHgt1ce1utzcit1Ok";
+  const apiKey = process.env.API_KEY;
   const address = encodeURIComponent(`${stopName}, София`);
   const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${apiKey}`;
 
